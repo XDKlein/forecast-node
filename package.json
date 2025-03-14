@@ -1,0 +1,19 @@
+{
+  "name": "forecast-node",
+  "version": "1.0.0",
+  "description": "Forecast SDK for Telegram Mini App Analytics.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XDKlein/forecast-node.git"
+  },
+  "author": "Xavier Klein",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/XDKlein/forecast-node/issues"
+  },
+  "homepage": "https://github.com/XDKlein/forecast-node#readme"
+}
