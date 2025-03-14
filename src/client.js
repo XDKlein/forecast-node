@@ -48,7 +48,7 @@ class ForecastClient {
   buildSession(data) {
     return {
       tag: this.config.tag,
-      user_id: data.message.from.id || 0,
+      user_id: String(data.message?.from.id || 0),
       timestamp: Date.now(),
       source: "node-sdk",
     }
@@ -59,24 +59,25 @@ class ForecastClient {
       event_name: "message",
       timestamp: Date.now(),
       tag: this.config.tag,
-      user_id: data.message.from.id || 0,
+      user_id: String(data.message?.from.id || 0),
+      page_url: "no_url",
       //session_id: sessionData.session_id,
       parameters: {
-        username: data.message?.from.username || undefined,
-        firstname: data.message?.from.first_name || undefined,
-        lastname: data.message?.from.last_name || undefined,
-        is_premium: Boolean(data.message?.from.is_premium),
-        language: data.message?.from.language_code || undefined,
+        username: String(data.message?.from.username || ""),
+        firstname: String(data.message?.from.first_name || ""),
+        lastname: String(data.message?.from.last_name || ""),
+        is_premium: String(Boolean(data.message?.from.is_premium)),
+        language: String(data.message?.from.language_code || ""),
 
-        message_id: data.message?.message_id || undefined,
-        chat_id: data.message?.chat?.id || undefined,
-        chat_type: data.message?.chat?.type || undefined,
-        text: data.message?.text || undefined,
-        date: data.message?.date || undefined,
+        message_id: String(data.message?.message_id || ""),
+        chat_id: String(data.message?.chat?.id || ""),
+        chat_type: String(data.message?.chat?.type || ""),
+        text: String(data.message?.text || ""),
+        date: String(data.message?.date || ""),
 
-        query_id: data.inline_query?.id,
-        query: data.inline_query?.query,
-        offset: data.inline_query?.offset
+        query_id: String(data.inline_query?.id || ""),
+        query: String(data.inline_query?.query || ""),
+        offset: String(data.inline_query?.offset || "")
       }
     }
   }
@@ -92,7 +93,7 @@ class ForecastClient {
 
       const result = await this._request("POST", "/collect", collectBody);
     } catch (error) {
-      console.error("Analytics error:", error);
+      console.error("Analytics error.\n", error);
     }
   }
 
@@ -107,7 +108,7 @@ class ForecastClient {
     });
 
     if (!response.ok) {
-      console.error("Request failed:", response);
+      throw new Error(`Request failed: ${await response.text()}`);
     }
     return response.json();
   }
