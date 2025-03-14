@@ -110,3 +110,5 @@ class ForecastClient {
     return response.json();
   }
 }
+
+module.exports = ForecastClient;

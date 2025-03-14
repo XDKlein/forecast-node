@@ -35,6 +35,6 @@ declare module 'forecast-node' {
   }
   export class ForecastClient {
     constructor(tag: string);
-    collect(data: TelegramData): Promise<any>;
+    collect(data: TelegramData): Promise<void>;
   }
 }
