@@ -106,7 +106,9 @@ class ForecastClient {
       body: data ? JSON.stringify(data) : undefined,
     });
 
-    if (!response.ok) throw new Error('Request failed', response);
+    if (!response.ok) {
+      console.error("Request failed:", response);
+    }
     return response.json();
   }
 }
