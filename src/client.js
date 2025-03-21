@@ -45,10 +45,10 @@ class ForecastClient {
     }
   }
 
-  buildSession(data) {
+  buildSession(data, userId = 0) {
     return {
       tag: this.config.tag,
-      user_id: String(data.message?.from.id || 0),
+      user_id: String(data.message?.from.id || userId),
       timestamp: Date.now(),
       source: "node-sdk",
     }
@@ -82,7 +82,32 @@ class ForecastClient {
     }
   }
 
-  async collect(data) {
+  async collect(eventName, payload = {}) {
+    try {
+      Object.keys(payload).forEach((key) => {
+        payload[key] = String(payload[key]);
+      });
+
+      if (!payload.user_id) throw new Error('User ID is not provided.')
+
+      const sessionData = this.buildSession({}, payload.user_id);
+
+      const eventData = {
+        event_name: eventName,
+        timestamp: Date.now(),
+        tag: this.config.tag,
+        user_id: sessionData.user_id,
+        page_url: "no_url",
+        parameters: stringPayload,
+      };
+
+      await this._request("POST", "/collect", { sessionData, eventData });
+    } catch (error) {
+      console.error("Analytics error:", error);
+    }
+  }
+
+  async collectTelegramEvent(data) {
     try {
       const parsedData = this.parseTelegramData(data);
 
