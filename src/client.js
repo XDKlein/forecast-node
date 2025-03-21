@@ -89,8 +89,15 @@ class ForecastClient {
       });
 
       if (!payload.user_id) throw new Error('User ID is not provided.')
-
-      const sessionData = this.buildSession({}, payload.user_id);
+      const sessionData = {
+        tag: this.config.tag,
+        user_id: payload.user_id,
+        timestamp: Date.now(),
+        source: payload.source || "node-sdk",
+        campaign: payload.campaign || '',
+        medium: payload.medium || ''
+      }
+      delete payload.user_id, payload.campaign, payload.medium, payload.source;
 
       const eventData = {
         event_name: eventName,
