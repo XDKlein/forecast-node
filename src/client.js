@@ -98,7 +98,7 @@ class ForecastClient {
         tag: this.config.tag,
         user_id: sessionData.user_id,
         page_url: "no_url",
-        parameters: stringPayload,
+        parameters: payload,
       };
 
       await this._request("POST", "/collect", { sessionData, eventData });
